@@ -12,3 +12,5 @@ gem "rspec", "~> 3.0"
 gem "rubocop", "~> 1.21"
 
 gem "byebug", "~> 11.1"
+
+gem "simplecov", "~> 0.21.2", require: false
