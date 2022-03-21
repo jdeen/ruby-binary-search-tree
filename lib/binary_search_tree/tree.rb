@@ -1,7 +1,16 @@
 module BinarySearchTree
+  # The basic BinarySearchTree
+  #
+  # @author Ziyan Junaideen
   class Tree
+    # The root note of the BST Tree
+    # @return [BinarySearchTree::Node] the root node
     attr_accessor :root
 
+    # Inserts a value to the Binary Search Tree (or sub-tree denoted by the `node` attribute).
+    # @param node [BinarySearchTree::Node] the tree/sub-tree root node
+    # @param value [Numeric] the value to be inserted to the tree
+    # @return [BinarySearchTree::Node] the BST Node that was inserted
     def insert(node = root, value)
       if node.nil?
         new_node = Node.new(value)
@@ -18,6 +27,10 @@ module BinarySearchTree
       new_node
     end
 
+    # Searches the BST Tree (or a sub-tree denoted by `node`) for a given value and return its node.
+    # @param node [BinarySearchTree::Node] the root node of the tree/sub-tree
+    # @param value [Numeric] the value to search
+    # @return [BinarySearchTree::Node, nil] the node corresponding to the given value
     def search(node = root, value)
       # The node not found
       return if node.nil?
@@ -29,16 +42,24 @@ module BinarySearchTree
       node
     end
 
+    # Provide the node corresponding to the min value stored in the BST tree (or sub-tree)
+    # @param node [BinarySearchTree::Node] the root node of the tree/sub-tree to find the min value of
+    # @return [BinarySearchTree::Node] the node with the min value
     def min(node = root)
       return node if node.left.nil?
 
       min(node.left)
     end
 
+    # Provide the inorder successor of the node.
+    # @note expected to be used with #delete
+    # @return [BinarySearchTree<Node>] the inorder successor for the provided node
     def inorder_successor(node)
       min(node.right)
     end
 
+    # Deletes the node from the tree and update references accordingly.
+    # @return [BinarySearchTree<Node>] the deleted node
     def delete(node = root, value)
       # Find the node to be deleted
       delete_node = search(node, value)
