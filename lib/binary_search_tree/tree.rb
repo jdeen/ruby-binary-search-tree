@@ -19,19 +19,19 @@ module BinarySearchTree
     end
 
     def search(node = root, value)
+      # The node not found
       return if node.nil?
-      
-      if node.value == value
-        node
-      elsif value < node.value
-        search(node.left, value)
-      else
-        search(node.right, value)
-      end
+
+      # Recursion to find the node
+      return search(node.left, value) if value < node.value
+      return search(node.right, value) if value > node.value
+
+      node
     end
 
     def min(node = root)
       return node if node.left.nil?
+
       min(node.left)
     end
 
@@ -39,33 +39,28 @@ module BinarySearchTree
       min(node.right)
     end
 
-
     def delete(node = root, value)
-      return if node.nil?
+      # Find the node to be deleted
+      delete_node = search(node, value)
+      return unless node
 
-      return delete(node.left, value)  if value < node.value
-      return delete(node.right, value) if value > node.value
-
-      # The node value matches the value provided
-      # These will be the break conditions that handle deletions
-
-      if node.children.count == 2
-        successor =  inorder_successor(node)
+      if delete_node.children.count == 2
+        successor = inorder_successor(delete_node)
 
         # Detach the successor and assign its right side to parent
         successor.parent.replace_child(successor, successor.right)
 
         # Swap the successor with the current node
-        successor.copy_children(node)
-        node.parent.replace_child(node, successor)
+        successor.copy_children(delete_node)
+        delete_node.parent.replace_child(delete_node, successor)
 
-        node
+        delete_node
       else
-        child = node.children.first
-        child.parent = node.parent if child
-        node.parent.replace_child(node, child)
-        
-        node
+        child = delete_node.children.first
+        child.parent = delete_node.parent if child
+        delete_node.parent.replace_child(delete_node, child)
+
+        delete_node
       end
     end
   end
