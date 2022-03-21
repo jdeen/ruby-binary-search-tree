@@ -17,8 +17,18 @@ Style/StringLiteralsInInterpolation:
 Layout/LineLength:
   Max: 120
 
+Metrics/MethodLength:
+  Enabled: true
+  CountComments: false
+  Max: 20
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
+
 Metrics/BlockLength:
   Exclude:
     - 'Rakefile'
     - '**/*.rake'
     - 'spec/**/*.rb'
+

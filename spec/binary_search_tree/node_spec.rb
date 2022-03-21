@@ -29,12 +29,12 @@ RSpec.describe BinarySearchTree::Node do
 
   describe "#children?" do
     it "returns false if no children" do
-      expect(node.children?).to be_falsey
+      expect(node).not_to be_children
     end
 
     it "returns true if any children" do
       node.left = described_class.new(25)
-      expect(node.children?).to be_truthy
+      expect(node).to be_children
     end
   end
 end

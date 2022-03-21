@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BinarySearchTree
   # The basic BinarySearchTree
   #
@@ -8,17 +10,17 @@ module BinarySearchTree
     attr_accessor :root
 
     # Inserts a value to the Binary Search Tree (or sub-tree denoted by the `node` attribute).
-    # @param node [BinarySearchTree::Node] the tree/sub-tree root node
     # @param value [Numeric] the value to be inserted to the tree
+    # @param node [BinarySearchTree::Node] the tree/sub-tree root node
     # @return [BinarySearchTree::Node] the BST Node that was inserted
-    def insert(node = root, value)
+    def insert(value, node = root)
       if node.nil?
         new_node = Node.new(value)
       elsif value < node.value
-        new_node = insert(node.left, value)
+        new_node = insert(value, node.left)
         node.left = new_node unless node.left
       else
-        new_node = insert(node.right, value)
+        new_node = insert(value, node.right)
         node.right = new_node unless node.right
       end
 
@@ -28,16 +30,16 @@ module BinarySearchTree
     end
 
     # Searches the BST Tree (or a sub-tree denoted by `node`) for a given value and return its node.
-    # @param node [BinarySearchTree::Node] the root node of the tree/sub-tree
     # @param value [Numeric] the value to search
+    # @param node [BinarySearchTree::Node] the root node of the tree/sub-tree
     # @return [BinarySearchTree::Node, nil] the node corresponding to the given value
-    def search(node = root, value)
+    def search(value, node = root)
       # The node not found
       return if node.nil?
 
       # Recursion to find the node
-      return search(node.left, value) if value < node.value
-      return search(node.right, value) if value > node.value
+      return search(value, node.left) if value < node.value
+      return search(value, node.right) if value > node.value
 
       node
     end
@@ -58,11 +60,14 @@ module BinarySearchTree
       min(node.right)
     end
 
+    # rubocop:disable Metrics/AbcSize
     # Deletes the node from the tree and update references accordingly.
+    # @param value [Numeric] the value of the node to be deleted
+    # @param node [BinarySearchTree::Node] the root note to start searching
     # @return [BinarySearchTree<Node>] the deleted node
-    def delete(node = root, value)
+    def delete(value, node = root)
       # Find the node to be deleted
-      delete_node = search(node, value)
+      delete_node = search(value, node)
       return unless node
 
       if delete_node.children.count == 2
@@ -74,15 +79,14 @@ module BinarySearchTree
         # Swap the successor with the current node
         successor.copy_children(delete_node)
         delete_node.parent.replace_child(delete_node, successor)
-
-        delete_node
       else
         child = delete_node.children.first
         child.parent = delete_node.parent if child
         delete_node.parent.replace_child(delete_node, child)
-
-        delete_node
       end
+
+      delete_node
     end
+    # rubocop:enable Metrics/AbcSize
   end
 end
