@@ -4,28 +4,50 @@ RSpec.describe BinarySearchTree::Tree do
   let(:tree) { described_class.new }
 
   describe "#insert" do
-    it "generates the tree" do
-      values = [50, 70, 30, 40, 20]
-      values.each { |value| tree.insert(value) }
+    context "when inserting first node" do
+      before do
+        tree.insert(50)
+      end
 
-      root = tree.root
+      it { expect(tree.root.value).to eq 50 }
+      it { expect(tree.root.parent).to be_nil }
+      it { expect(tree.root.children).to be_empty }
+    end
 
-      expect(root).not_to be_nil
-      expect(root.value).to eq 50
-      expect(root.left.value).to eq 30
-      expect(root.right.value).to eq 70
+    context "when inserting 70" do
+      before do
+        [50, 70].each { |value| tree.insert(value) }
+      end
 
-      # node with value three
-      node_thirty = root.left
-      expect(node_thirty.left.value).to eq 20
-      expect(node_thirty.right.value).to eq 40
-      expect(node_thirty.left.children?).to be_falsy
-      expect(node_thirty.right.children?).to be_falsy
+      it { expect(tree.root.right.value).to eq 70 }
+      it { expect(tree.root.right.parent.value).to eq 50 }
+    end
 
-      expect(root.right.children?).to be_falsy
+    context "when inserting 30" do
+      before do
+        [50, 70, 30].each { |value| tree.insert(value) }
+      end
 
-      search_result = tree.search(40)
-      expect(search_result).to eq(node_thirty.right)
+      it { expect(tree.root.left.value).to eq 30 }
+      it { expect(tree.root.left.parent.value).to eq 50 }
+    end
+
+    context "when inserting 40" do
+      before do
+        [50, 70, 30, 40].each { |value| tree.insert(value) }
+      end
+
+      it { expect(tree.root.left.right.value).to eq 40 }
+      it { expect(tree.root.left.right.parent.value).to eq 30 }
+    end
+
+    context "when inserting 20" do
+      before do
+        [50, 70, 30, 40, 20].each { |value| tree.insert(value) }
+      end
+
+      it { expect(tree.root.left.left.value).to eq 20 }
+      it { expect(tree.root.left.left.parent.value).to eq 30 }
     end
   end
 
